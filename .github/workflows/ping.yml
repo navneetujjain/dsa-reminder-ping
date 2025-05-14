@@ -1,0 +1,31 @@
+name: Daily Ping to DSA Reminder App
+
+on:
+  schedule:
+    - cron: '25 4 * * *'   # 09:55 AM IST
+    - cron: '55 9 * * *'   # 09:55 AM UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping dsa-reminder-app with retry and logging
+        run: |
+          echo "Starting ping at $(date -u) UTC"
+          for i in {1..3}; do
+            STATUS=$(curl -s -o response.txt -w "%{http_code}" https://dsa-reminder-app.onrender.com)
+            echo "Attempt #$i - HTTP Status: $STATUS"
+            if [[ "$STATUS" == 2* ]]; then
+              echo "✅ Success"
+              cat response.txt
+              break
+            elif [[ $i -eq 3 ]]; then
+              echo "❌ Failed after 3 attempts"
+              cat response.txt
+              exit 1
+            else
+              echo "⚠️ Retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
