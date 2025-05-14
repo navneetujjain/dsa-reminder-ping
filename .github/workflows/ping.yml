@@ -3,18 +3,18 @@ name: Daily Ping to DSA Reminder App
 on:
   schedule:
     - cron: '25 4 * * *'   # 09:55 AM IST
-    - cron: '55 9 * * *'   # 09:55 AM UTC
+    - cron: '55 9 * * *'    # 09:55 AM UTC
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping dsa-reminder-app with retry and logging
+      - name: Send GET request to dsa-reminder-app with retry and logging
         run: |
-          echo "Starting ping at $(date -u) UTC"
+          echo "Starting GET request at $(date -u) UTC"
           for i in {1..3}; do
-            STATUS=$(curl -s -o response.txt -w "%{http_code}" https://dsa-reminder-app.onrender.com)
+            STATUS=$(curl -X GET -s -o response.txt -w "%{http_code}" https://dsa-reminder-app.onrender.com)
             echo "Attempt #$i - HTTP Status: $STATUS"
             if [[ "$STATUS" == 2* ]]; then
               echo "✅ Success"
