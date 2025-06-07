@@ -3,11 +3,18 @@ name: Daily Ping to DSA Reminder App
 on:
   schedule:
     - cron: '55 3 * * *'
+    - cron: '58 3 * * *'
     - cron: '00 4 * * *'
+    - cron: '04 4 * * *'
     - cron: '07 4 * * *'
+    - cron: '10 4 * * *'
+    - cron: '13 4 * * *'
     - cron: '15 4 * * *'
+    - cron: '18 4 * * *'
     - cron: '20 4 * * *'   # 09:55 AM IST
-    - cron: '55 9 * * *'    # 09:55 AM UTC
+    - cron: '25 4 * * *'
+    - cron: '28 4 * * *'
+    
   workflow_dispatch:
 
 jobs:
